@@ -25,6 +25,10 @@ for i in range (len(files_names)) :
         for m in range(len(Ltemp)):
             str=str+Ltemp[m]
         Nompres1.append(str)
+    elif Ltemp[-1] == "1":
+        for m in range(len(Ltemp)-1):
+            str=str+Ltemp[m]
+        Nompres1.append(str)
 
 print(Nompres1)
 
