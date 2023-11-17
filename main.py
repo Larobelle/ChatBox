@@ -30,5 +30,25 @@ for i in range (len(files_names)) :
             str=str+Ltemp[m]
         Nompres1.append(str)
 
-print(Nompres1)
+Nompres2 = []
+
+for elmt in Nompres1 :
+    if elmt == "Chirac" :
+        elmt = "Jacques " + elmt
+        Nompres2.append(elmt)
+    elif elmt == "Giscard dEstaing" :
+        elmt = "Valéry " + elmt
+        Nompres2.append(elmt)
+    elif elmt == "Hollande" or elmt == "Mitterrand":
+        elmt = "François " + elmt
+        Nompres2.append(elmt)
+    elif elmt == "Macron" :
+        elmt = "Emmanuel " + elmt
+        Nompres2.append(elmt)
+    elif elmt == "Sarkozy" :
+        elmt = "Nicolas " + elmt
+        Nompres2.append(elmt)
+
+print(Nompres2)
+
 
