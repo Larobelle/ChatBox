@@ -21,11 +21,10 @@ for i in range (len(files_names)) :
         Ltemp.pop(0)
     for l in range (4):
         Ltemp.pop(-1)
-    if Ltemp[-1] == "1" or Ltemp[-1] == "2":
-        Ltemp.pop(-1)
-    for m in range(len(Ltemp)):
-        str=str+Ltemp[m]
-    Nompres1.append(str)
+    if not(Ltemp[-1] == "1" or Ltemp[-1] == "2"):
+        for m in range(len(Ltemp)):
+            str=str+Ltemp[m]
+        Nompres1.append(str)
 
 print(Nompres1)
 
