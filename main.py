@@ -36,24 +36,28 @@ def Extraction_names(files_names):
             Nompres1.append(str)
     return Nompres1
 
-#def Association_1stnames ()
-Nompres2 = []
-Nompres1=Extraction_names(files_names)
-for elmt in Nompres1 :
-    if elmt == "Chirac" :
-        elmt = "Jacques " + elmt
-        Nompres2.append(elmt)
-    elif elmt == "Giscard dEstaing" :
-        elmt = "Valéry " + elmt
-        Nompres2.append(elmt)
-    elif elmt == "Hollande" or elmt == "Mitterrand":
-        elmt = "François " + elmt
-        Nompres2.append(elmt)
-    elif elmt == "Macron" :
-        elmt = "Emmanuel " + elmt
-        Nompres2.append(elmt)
-    elif elmt == "Sarkozy" :
-        elmt = "Nicolas " + elmt
-        Nompres2.append(elmt)
+def Association_1stnames (Nompres1):
+    Nompres2 = []
+    Nompres1=Extraction_names(files_names)
+    for elmt in Nompres1 :
+        if elmt == "Chirac" :
+            elmt = "Jacques " + elmt
+            Nompres2.append(elmt)
+        elif elmt == "Giscard dEstaing" :
+            elmt = "Valéry " + elmt
+            Nompres2.append(elmt)
+        elif elmt == "Hollande" or elmt == "Mitterrand":
+            elmt = "François " + elmt
+            Nompres2.append(elmt)
+        elif elmt == "Macron" :
+            elmt = "Emmanuel " + elmt
+            Nompres2.append(elmt)
+        elif elmt == "Sarkozy" :
+            elmt = "Nicolas " + elmt
+            Nompres2.append(elmt)
 
-print(Nompres2)
+    return (Nompres2)
+
+nomprez= Extraction_names(files_names)
+nomprez2=Association_1stnames(nomprez)
+print(nomprez2)
