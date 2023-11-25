@@ -1,5 +1,6 @@
 import os
 import collections
+from math import log
 
 
 def list_of_files(extension):
@@ -72,15 +73,15 @@ def association_1st_names(nompres1):
     return nompres2
 
 
-def clean_docs(files_names): #    Clean the speeches and put them into a new folder as well as collects the 50 most recurrent words
+def clean_docs_and_tf (files_names, dico_general):
     """
-
-    :param files_names: list
-    :return: dictionary: list
+    Clean the speeches and put them into a new folder as well as returns tf in the form of a list of dictionaries
+    :param files_names: list; dico_general: dict
+    :return: dictionary: list of dict
     """
-    dictionary=[]
-    for i in range (len(files_names)):
-        directory = "./speeches"+"/"+files_names[i]
+    dictionary = []
+    for i in range(len(files_names)):
+        directory = "./speeches" + "/" + files_names[i]
         with open(directory, 'r') as f:  # Opens the text files
             speech = f.read().lower()
 
@@ -90,11 +91,11 @@ def clean_docs(files_names): #    Clean the speeches and put them into a new fol
         speech = speech.replace("\n", " ")
 
         # replace apostrophes and commas
-        speech = speech.replace("'", " ")
+        speech = speech.replace("'", "e ")
         speech = speech.replace('\x92', " ")
         speech = speech.replace(',', "")
 
-        #replace accents
+        # replace accents
         speech = speech.replace("ã©", "e")
         speech = speech.replace("ã", "a")
         speech = speech.replace("a¨", "e")
@@ -111,35 +112,51 @@ def clean_docs(files_names): #    Clean the speeches and put them into a new fol
         speech = speech.replace("â", "a")
         speech = speech.replace("  ", " ")
 
-        #numbers and puntuation
-        ponctuations_num = '''!()[]{}---;:"\,<>`´./?@#$%^&*_~Â° Â«Â»1234567890'''
-        pas_ponct = ""
+        # numbers and punctuation
+        punctuation_num = '''!()[]{}---;:"\,<>`´./?@#$%^&*_~Â° Â«Â»1234567890'''
+        speech_without_punctuation = ""
         for char in speech:
-            if char not in ponctuations_num:
-                pas_ponct = pas_ponct + char
+            if char not in punctuation_num:
+                speech_without_punctuation = speech_without_punctuation + char
             else:
-                pas_ponct = pas_ponct + " "
+                speech_without_punctuation = speech_without_punctuation + " "
 
-        speech = pas_ponct
+        speech = speech_without_punctuation
 
         """Creation of a new file 'Cleaned'"""
 
         directory = "./clean"
-        with open(directory+files_names[i]+"_clean", 'w') as new_file_cleaned:
+        with open(directory + files_names[i] + "_clean", 'w') as new_file_cleaned:
             new_file_cleaned.write(speech)
 
-        """List of the most 50 most recurrent words"""
+        """Dictionaries of words"""
+        speech = speech.split(" ")  # transform the text into a dictionary
+        dico = collections.Counter(speech)  # .most_common(285) keep the 50 most common words from the speech
 
-        speech = speech.split(" ")
-        dico = collections.Counter(speech)  # keep the 50 most common words from the speech
-        dico = collections.OrderedDict(dico)
+        del dico['']  # dico = collections.OrderedDict(dico)
         dictionary.append(dico)
+
     return dictionary
 
+def idf (dictionary,dico_general):
+    for i in range (len(dictionary)):
+        for elmt in list(dictionary[i].items()):
+            if elmt[0] not in dico_general:
+                dico_general[elmt[0]] = elmt[1]
+            else:
+                dico_general[elmt[0]]+= elmt[1]
 
+    """IDF calculation w/log"""
+    idf={}
+    for key, value in dico_general.items():
+        idf[key]=log(len(dictionary)/value+1)
+    print(dico_general)
+    print(idf)
 
-# Call of the functions
+"""Call of the functions"""
 files_names = list_of_files("txt")
 noms_presidents = extraction_names(files_names)
 noms_presidents2 = association_1st_names(noms_presidents)
-print(clean_docs(files_names))
+dico_general={}
+dictionary=(clean_docs_and_tf(files_names, dico_general))
+idf (dictionary,dico_general)
