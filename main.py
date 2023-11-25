@@ -33,9 +33,9 @@ def extraction_names(files_names):
             temporary_list.pop(0)
         for l in range(4):  # removes the lest 4 characters of the list
             temporary_list.pop(-1)
-        if not (temporary_list[-1] == "1" or temporary_list[
-            -1] == "2"):  # transforms from list to str the names of presidents not appearing twice in the folder
-            for m in range(len(temporary_list)):
+        if not (temporary_list[-1] == "1" or temporary_list[-1] == "2"):  # transforms from list to str the names of
+            # presidents not appearing twice in the folder
+            for m in range(len(temporary_list)):  # transforms a list of characters into a str and puts it into a list
                 string = string + temporary_list[m]
             noms_prez1.append(string)
         elif temporary_list[-1] == "1":  # transforms from list to str the names of presidents appearing twice in the
@@ -73,17 +73,17 @@ def association_1st_names(nompres1):
     return nompres2
 
 
-def clean_docs_and_tf (files_names, dico_general):
+def clean_docs_and_tf(files_names):
     """
-    Clean the speeches and put them into a new folder as well as returns tf in the form of a list of dictionaries
-    :param files_names: list; dico_general: dict
+    Clean the speeches and saves them in a new folder as well as returns tf in the form of a list of dictionaries
+    :param files_names: list
     :return: dictionary: list of dict
     """
     dictionary = []
-    for i in range(len(files_names)):
+    for i in range(len(files_names)):  # loop to clean all the docs at once and calculates tf
         directory = "./speeches" + "/" + files_names[i]
         with open(directory, 'r') as f:  # Opens the text files
-            speech = f.read().lower()
+            speech = f.read().lower()  # puts the speech in lower case
 
         """Text Processing = Cleaning"""
 
@@ -112,8 +112,8 @@ def clean_docs_and_tf (files_names, dico_general):
         speech = speech.replace("â", "a")
         speech = speech.replace("  ", " ")
 
-        # numbers and punctuation
-        punctuation_num = '''!()[]{}---;:"\,<>`´./?@#$%^&*_~Â° Â«Â»1234567890'''
+        # delete numbers and punctuation
+        punctuation_num = '''!()[]{}-;:"\,<>`´./?@#$%^&*_~Â° Â«Â»1234567890'''
         speech_without_punctuation = ""
         for char in speech:
             if char not in punctuation_num:
@@ -125,9 +125,9 @@ def clean_docs_and_tf (files_names, dico_general):
 
         """Creation of a new file 'Cleaned'"""
 
-        directory = "./clean"
-        with open(directory + files_names[i] + "_clean", 'w') as new_file_cleaned:
-            new_file_cleaned.write(speech)
+        directory = "./clean/"
+        with open(directory + "clean_" + files_names[i], 'w') as new_file_cleaned:
+            new_file_cleaned.write(speech)  # stores the new cleaned file in the 'clean' folder
 
         """Dictionaries of words"""
         speech = speech.split(" ")  # transform the text into a dictionary
@@ -138,25 +138,32 @@ def clean_docs_and_tf (files_names, dico_general):
 
     return dictionary
 
-def idf (dictionary,dico_general):
-    for i in range (len(dictionary)):
-        for elmt in list(dictionary[i].items()):
+
+def idf(dictionary, dico_general):
+    """
+    Takes in as a parameter the term frequency of all documents
+    :param dictionary: list
+    :param dico_general: dict
+    :return: tf_idf: dict
+    """
+    for i in range(len(dictionary)): # takes out one by one the lists of tf of each files
+        for elmt in list(dictionary[i].items()): # creates on big dictionary compiling all the words in the files
             if elmt[0] not in dico_general:
                 dico_general[elmt[0]] = elmt[1]
             else:
-                dico_general[elmt[0]]+= elmt[1]
+                dico_general[elmt[0]] += elmt[1]
 
     """IDF calculation w/log"""
-    idf={}
-    for key, value in dico_general.items():
-        idf[key]=log(len(dictionary)/value+1)
-    print(dico_general)
-    print(idf)
+    tf_idf = {}
+    for key, value in dico_general.items(): # transforms the dict of tf (key-val) into an idf with the help from formula
+        tf_idf[key] = log(len(dictionary) / value + 1)
+    return tf_idf
 
-"""Call of the functions"""
+
+# Call the functions
 files_names = list_of_files("txt")
 noms_presidents = extraction_names(files_names)
 noms_presidents2 = association_1st_names(noms_presidents)
-dico_general={}
-dictionary=(clean_docs_and_tf(files_names, dico_general))
-idf (dictionary,dico_general)
+dico_general = {}
+dictionary = (clean_docs_and_tf(files_names))
+print (idf(dictionary, dico_general))
