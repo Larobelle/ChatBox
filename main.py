@@ -146,8 +146,8 @@ def idf(dictionary, dico_general):
     :param dico_general: dict
     :return: tf_idf: dict
     """
-    for i in range(len(dictionary)): # takes out one by one the lists of tf of each files
-        for elmt in list(dictionary[i].items()): # creates on big dictionary compiling all the words in the files
+    for i in range(len(dictionary)):  # takes out one by one the lists of tf of each files
+        for elmt in list(dictionary[i].items()):  # creates on big dictionary compiling all the words in the files
             if elmt[0] not in dico_general:
                 dico_general[elmt[0]] = elmt[1]
             else:
@@ -155,15 +155,36 @@ def idf(dictionary, dico_general):
 
     """IDF calculation w/log"""
     tf_idf = {}
-    for key, value in dico_general.items(): # transforms the dict of tf (key-val) into an idf with the help from formula
+    for key, value in dico_general.items():  # transforms the dict of tf (key-val) into an idf with the help from formula
         tf_idf[key] = log(len(dictionary) / value + 1)
     return tf_idf
 
 
-# Call the functions
-files_names = list_of_files("txt")
-noms_presidents = extraction_names(files_names)
-noms_presidents2 = association_1st_names(noms_presidents)
-dico_general = {}
-dictionary = (clean_docs_and_tf(files_names))
-print (idf(dictionary, dico_general))
+def menu():
+    """
+    Temporary menu
+    :param  none
+    :return: none
+    """
+    files_names = list_of_files("txt")
+    noms_presidents = extraction_names(files_names)
+    noms_presidents2 = association_1st_names(noms_presidents)
+    dico_general = {}
+    dictionary = (clean_docs_and_tf(files_names))
+
+    answer = 4
+    print ("Type 1 if you want the tf-idf of the docs.")
+    print ("Type 2 if you want the list of the presidents' names.")
+    print("Type 0 to exit the code.")
+    while answer != 1 or 2 or 0:
+        answer = int(input("Choice: "))
+
+        if answer == 1:
+            print(idf(dictionary, dico_general))
+        elif answer == 2:
+            print(noms_presidents2)
+        elif answer==0:
+            exit()
+
+
+menu()
