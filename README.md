@@ -18,5 +18,7 @@ functions
     Clean the speeches and saves them in a new folder as well as returns tf in the form of a list of dictionaries
 -idf(dictionary, dico_general)
     Takes in as a parameter the term frequency of all documents
+-menu()
+    Temporary menu
 
-*At the end of the program, the functions are already called and returns the tf-idf of every word in a dictionary.
+*At the end of the program, the functions are already called in the menu function. Follow instruction in the console.
