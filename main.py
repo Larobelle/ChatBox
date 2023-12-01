@@ -1,6 +1,6 @@
 import os
 import collections
-from math import log
+from math import log, ceil
 
 
 def list_of_files(extension):
@@ -138,7 +138,7 @@ def clean_docs_and_tf(files_names):
 
     return dictionary
 
-
+unimportant_words = []
 def idf(dictionary, dico_general):
     """
     Takes in as a parameter the term frequency of all documents
@@ -156,7 +156,7 @@ def idf(dictionary, dico_general):
     """IDF calculation w/log"""
     tf_idf = {}
     for key, value in dico_general.items():  # transforms the dict of tf (key-val) into an idf with the help from formula
-        tf_idf[key] = log(len(dictionary) / value + 1)
+        tf_idf[key] = int(round(log(len(dictionary) / value + 1), 0))
     return tf_idf
 
 
@@ -172,7 +172,7 @@ def menu():
     dico_general = {}
     dictionary = (clean_docs_and_tf(files_names))
 
-    answer = 4
+    answer = -1
     print ("Type 1 if you want the tf-idf of the docs.")
     print ("Type 2 if you want the list of the presidents' names.")
     print("Type 0 to exit the code.")
