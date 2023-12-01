@@ -176,10 +176,11 @@ def menu():
     print ("Type 1 if you want the tf-idf of the docs.")
     print ("Type 2 if you want the list of the presidents' names.")
     print("Type 3 to display the most common words in the corpus of texts")
+    print("Type 4 to display the least common words in the corpus of texts")
     print("Type 0 to exit the code.")
     m = idf(dictionary, dico_general)
 
-    while answer != 1 or 2 or 3 or 0:
+    while answer != 1 or 2 or 3 or 4 or 0:
         answer = int(input("Choice: "))
 
         if answer == 1:
