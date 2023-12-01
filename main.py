@@ -177,19 +177,23 @@ def menu():
     print ("Type 2 if you want the list of the presidents' names.")
     print("Type 3 to display the most common words in the corpus of texts")
     print("Type 0 to exit the code.")
+    m = idf(dictionary, dico_general)
+
     while answer != 1 or 2 or 3 or 0:
         answer = int(input("Choice: "))
 
         if answer == 1:
-            print(idf(dictionary, dico_general))
+            print(m)
         elif answer == 2:
             print(noms_presidents2)
         elif answer ==3:
-            m=idf(dictionary, dico_general)
             for elmt, value in m.items():
                 if value == 0:
                     print(elmt)
-
+        elif answer == 4 :
+            for elmt, value in m.items() :
+                if value == 2 :
+                    print(elmt)
         elif answer==0:
             exit()
 
