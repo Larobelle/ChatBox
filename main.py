@@ -138,7 +138,7 @@ def clean_docs_and_tf(files_names):
 
     return dictionary
 
-unimportant_words = []
+
 def idf(dictionary, dico_general):
     """
     Takes in as a parameter the term frequency of all documents
@@ -172,17 +172,24 @@ def menu():
     dico_general = {}
     dictionary = (clean_docs_and_tf(files_names))
 
-    answer = -1
+    answer = 4
     print ("Type 1 if you want the tf-idf of the docs.")
     print ("Type 2 if you want the list of the presidents' names.")
+    print("Type 3 to display the most common words in the corpus of texts")
     print("Type 0 to exit the code.")
-    while answer != 1 or 2 or 0:
+    while answer != 1 or 2 or 3 or 0:
         answer = int(input("Choice: "))
 
         if answer == 1:
             print(idf(dictionary, dico_general))
         elif answer == 2:
             print(noms_presidents2)
+        elif answer ==3:
+            m=idf(dictionary, dico_general)
+            for elmt, value in m.items():
+                if value == 0:
+                    print(elmt)
+
         elif answer==0:
             exit()
 
