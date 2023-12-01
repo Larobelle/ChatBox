@@ -159,6 +159,32 @@ def idf(dictionary, dico_general):
         tf_idf[key] = int(round(log(len(dictionary) / value + 1), 0))
     return tf_idf
 
+def tf_idf_prez():
+    print("To visualise the most common words per presidents, enter the number next to it in the console")
+    for i in range(len(noms_presidents2)):
+        print(noms_presidents2[i], i)
+    choice = int(input("Choice:"))
+    if choice == 0:
+        a = int(input("This president has 2 speeches, would you like to visualise the most common words per "
+                      "speech (0) or both speeches combined (1)?"))
+        if a == 1:
+            dict = []
+            dico_final_chirac = {}
+            dict.append(dictionary[0])
+            dict.append(dictionary[1])
+            for i in range(len(dict)):
+                for elmt in list(
+                        dict[i].items()):  # creates on big dictionary compiling all the words in the files
+                    if elmt[0] not in dico_final_chirac:
+                        dico_final_chirac[elmt[0]] = elmt[1]
+                    else:
+                        dico_final_chirac[elmt[0]] += elmt[1]
+            p = idf(dict, dico_final_chirac)
+            for key, value in p.items():
+                for keys, values in m.items():
+                    if keys == key and values == 2:
+                        print(key)
+
 
 def menu():
     """
@@ -195,6 +221,32 @@ def menu():
             for elmt, value in m.items() :
                 if value == 2 :
                     print(elmt)
+        elif answer == 5:
+            print("To visualise the most common words per presidents, enter the number next to it in the console")
+            for i in range(len(noms_presidents2)):
+                print(noms_presidents2[i], i)
+            choice =int(input("Choice:"))
+            if  choice==0:
+                a= int(input("This president has 2 speeches, would you like to visualise the most common words per "
+                             "speech (0) or both speeches combined (1)?"))
+                if a==1:
+                    dict=[]
+                    dico_final_chirac={}
+                    dict.append(dictionary[0])
+                    dict.append(dictionary[1])
+                    for i in range(len(dict)):
+                        for elmt in list(
+                                dict[i].items()):  # creates on big dictionary compiling all the words in the files
+                            if elmt[0] not in dico_final_chirac:
+                                dico_final_chirac[elmt[0]] = elmt[1]
+                            else:
+                                dico_final_chirac[elmt[0]] += elmt[1]
+                    p=idf(dict, dico_final_chirac)
+                    for key, value in p.items():
+                        for keys, values in m.items():
+                            if keys == key and values==2:
+                                print (key)
+
         elif answer==0:
             exit()
 
