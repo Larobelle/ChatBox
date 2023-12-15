@@ -1,6 +1,7 @@
 import os
 import collections
 from math import log, ceil
+import string
 
 
 def list_of_files(extension):
@@ -132,9 +133,8 @@ def clean_docs_and_tf(files_names):
         """Dictionaries of words"""
         speech = speech.split(" ")  # transform the text into a dictionary
         dico = collections.Counter(speech)  # .most_common(285) keep the 50 most common words from the speech
-
         del dico['']  # dico = collections.OrderedDict(dico)
-        dictionary.append(dico)
+        dictionary.append(dico) #il faut pouvoir avoir accès à chaque speech séparement aussi, car pour idf, il faut voir dans combien de speech un mot apparait
 
     return dictionary
 
@@ -156,18 +156,18 @@ def idf(dictionary, dico_general):
     """IDF calculation w/log"""
     tf_idf = {}
     for key, value in dico_general.items():  # transforms the dict of tf (key-val) into an idf with the help from formula
-        tf_idf[key] = int(round(log(len(dictionary) / value + 1), 0))
-    return tf_idf
+        tf_idf[key] = log(len(dictionary) / value)
+    return tf_idf   #tf idf c'est tf times idf, le log calcule seulement idf
 
 def tf_idf_prez():
     print("To visualise the most common words per presidents, enter the number next to it in the console")
     for i in range(len(noms_presidents2)):
         print(noms_presidents2[i], i)
     choice = int(input("Choice:"))
-    if choice == 0:
+    if choice == 0 or choice == 4:
         a = int(input("This president has 2 speeches, would you like to visualise the most common words per "
                       "speech (0) or both speeches combined (1)?"))
-        if a == 1:
+        if a == 1 and choice == 0:
             dict = []
             dico_final_chirac = {}
             dict.append(dictionary[0])
@@ -185,6 +185,70 @@ def tf_idf_prez():
                     if keys == key and values == 2:
                         print(key)
 
+
+def tokanization ():                                                #to return the question cleaned
+    question = input("Ask a question in french ! :")
+    question = question.lower()  # puts the question in lower case
+    for i in range(len(question)):
+
+
+        """Text Processing = Cleaning"""
+
+        # replace new lines
+        question = question.replace("\n", " ")
+
+        # replace apostrophes and commas
+        question = question.replace("'", "e ")
+        question = question.replace('\x92', " ")
+        question = question.replace(',', "")
+
+        # replace accents
+        question = question.replace("ã©", "e")
+        question = question.replace("ã", "a")
+        question = question.replace("a¨", "e")
+        question = question.replace("a¹", "u")
+        question = question.replace("a®", "i")
+        question = question.replace("a‰", "e")
+        question = question.replace("a§", "c")
+        question = question.replace("aª", "c")
+        question = question.replace("\xa0", " ")
+        question = question.replace("a¢", "a")
+        question = question.replace("a¯", "i")
+        question = question.replace("œ", "oe")
+        question = question.replace("a€", "a")
+        question = question.replace("â", "a")
+        question = question.replace("  ", " ")
+
+        # delete numbers and punctuation
+        punctuation_num = '''!()[]{}-;:"\,<>`´./?@#$%^&*_~Â° Â«Â»1234567890'''
+        question_without_punctuation = ""
+        for char in question:
+            if char not in punctuation_num:
+                question_without_punctuation = question_without_punctuation + char
+            else:
+                question_without_punctuation = question_without_punctuation + " "
+
+        question = question_without_punctuation
+
+        """Creation of a new file 'Cleaned'"""
+
+
+    return question
+
+def list_of_question_words(quest):    #to return the list of words in the question
+    words_of_question = []
+    words_of_question = quest.split(" ")
+    words_of_question.remove("")
+    print(words_of_question)
+    return words_of_question
+
+
+def intersection_question_files(a, dict):     #to return all the words that appear in the question AND in the files
+    tmp_list = []
+    for i in range (len(a)) :
+        if a[i] in dict :
+            tmp_list.append(a[i])
+    print(tmp_list)
 
 def menu():
     """
@@ -206,7 +270,7 @@ def menu():
     print("Type 0 to exit the code.")
     m = idf(dictionary, dico_general)
 
-    while answer != 1 or 2 or 3 or 4 or 0:
+    while answer != 1 or 2 or 3 or 4 or 0 or 5:
         answer = int(input("Choice: "))
 
         if answer == 1:
@@ -221,31 +285,10 @@ def menu():
             for elmt, value in m.items() :
                 if value == 2 :
                     print(elmt)
-        elif answer == 5:
-            print("To visualise the most common words per presidents, enter the number next to it in the console")
-            for i in range(len(noms_presidents2)):
-                print(noms_presidents2[i], i)
-            choice =int(input("Choice:"))
-            if  choice==0:
-                a= int(input("This president has 2 speeches, would you like to visualise the most common words per "
-                             "speech (0) or both speeches combined (1)?"))
-                if a==1:
-                    dict=[]
-                    dico_final_chirac={}
-                    dict.append(dictionary[0])
-                    dict.append(dictionary[1])
-                    for i in range(len(dict)):
-                        for elmt in list(
-                                dict[i].items()):  # creates on big dictionary compiling all the words in the files
-                            if elmt[0] not in dico_final_chirac:
-                                dico_final_chirac[elmt[0]] = elmt[1]
-                            else:
-                                dico_final_chirac[elmt[0]] += elmt[1]
-                    p=idf(dict, dico_final_chirac)
-                    for key, value in p.items():
-                        for keys, values in m.items():
-                            if keys == key and values==2:
-                                print (key)
+        elif answer == 5 :
+            cleaned_question = tokanization()
+            list_question = list_of_question_words(cleaned_question)
+            intersection_question_files(list_question,dictionary)
 
         elif answer==0:
             exit()
