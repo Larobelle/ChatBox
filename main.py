@@ -133,6 +133,7 @@ def clean_docs_and_tf(files_names):
         """Dictionaries of words"""
         speech = speech.split(" ")  # transform the text into a dictionary
         dico = collections.Counter(speech)  # .most_common(285) keep the 50 most common words from the speech
+
         del dico['']  # dico = collections.OrderedDict(dico)
         dictionary.append(dico) #il faut pouvoir avoir accès à chaque speech séparement aussi, car pour idf, il faut voir dans combien de speech un mot apparait
 
@@ -279,12 +280,12 @@ def menu():
             print(noms_presidents2)
         elif answer ==3:
             for elmt, value in m.items():
-                if value == 0:
+                if value < 1:
                     print(elmt)
         elif answer == 4 :
             for elmt, value in m.items() :
-                if value == 2 :
-                    print(elmt)
+                if float(value) > 2:
+                    print(elmt, value)
         elif answer == 5 :
             cleaned_question = tokanization()
             list_question = list_of_question_words(cleaned_question)
