@@ -104,7 +104,7 @@ def clean_docs_and_tf(files_names):
         speech = speech.replace("a®", "i")
         speech = speech.replace("a‰", "e")
         speech = speech.replace("a§", "c")
-        speech = speech.replace("aª", "c")
+        speech = speech.replace("aª", "e")
         speech = speech.replace("\xa0", " ")
         speech = speech.replace("a¢", "a")
         speech = speech.replace("a¯", "i")
@@ -154,12 +154,15 @@ def idf(dictionary, dico_general):
             else:
                 dico_general[elmt[0]] += elmt[1]
 
-    """IDF calculation w/log"""
-    tf_idf = {}
-    for key, value in dico_general.items():  # transforms the dict of tf (key-val) into an idf with the help from formula
-        tf_idf[key] = log(len(dictionary) / value)
-    return tf_idf   #tf idf c'est tf times idf, le log calcule seulement idf
+    #PARCOURS LE DICO ET REGARDE CBM DE DOCS MOT APPARAIT DEDANS
 
+    """IDF calculation w/log"""
+    idf_word = {}
+    for key, value in dico_general.items(): # transforms the dict of tf (key-val) into an idf with the help from formula
+        idf_word[key] = log(len(dictionary) / value)
+    return idf_word   #tf idf c'est tf times idf, le log calcule seulement idf
+
+"""
 def tf_idf_prez():
     print("To visualise the most common words per presidents, enter the number next to it in the console")
     for i in range(len(noms_presidents2)):
@@ -185,6 +188,7 @@ def tf_idf_prez():
                 for keys, values in m.items():
                     if keys == key and values == 2:
                         print(key)
+"""
 
 
 def tokanization ():                                                #to return the question cleaned
@@ -295,4 +299,10 @@ def menu():
             exit()
 
 
-menu()
+#menu()
+files_names = list_of_files("txt")
+noms_presidents = extraction_names(files_names)
+noms_presidents2 = association_1st_names(noms_presidents)
+dico_general = {}
+dictionary = (clean_docs_and_tf(files_names))
+print (dictionary)
