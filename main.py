@@ -1,6 +1,6 @@
 import os
 import collections
-from math import log, ceil
+from math import log
 import string
 
 
@@ -132,9 +132,9 @@ def clean_docs_and_tf(files_names):
 
         """Dictionaries of words"""
         speech = speech.split(" ")  # transform the text into a dictionary
-        dico = collections.Counter(speech)  # .most_common(285) keep the 50 most common words from the speech
-
-        del dico['']  # dico = collections.OrderedDict(dico)
+        dico = collections.Counter(speech)#.most_common(285) #keep the 50 most common words from the speech
+        del dico['']
+        #dico = collections.OrderedDict(dico)
         dictionary.append(dico) #il faut pouvoir avoir accès à chaque speech séparement aussi, car pour idf, il faut voir dans combien de speech un mot apparait
 
     return dictionary
@@ -144,23 +144,32 @@ def idf(dictionary, dico_general):
     """
     Takes in as a parameter the term frequency of all documents
     :param dictionary: list
-    :param dico_general: dict
-    :return: tf_idf: dict
+    :param dico_general: list
+    :return: idf_word: dict
     """
-    for i in range(len(dictionary)):  # takes out one by one the lists of tf of each files
-        for elmt in list(dictionary[i].items()):  # creates on big dictionary compiling all the words in the files
-            if elmt[0] not in dico_general:
-                dico_general[elmt[0]] = elmt[1]
-            else:
-                dico_general[elmt[0]] += elmt[1]
 
+    list = []
+    liste = []
+    for elmt in dictionary[0].items():  # creates on big dictionary compiling all the words in the files
+        a = elmt[0]
+        list.append(elmt[1])
+        liste.append(a)
+        liste.append([elmt[1]])
+    dico_general.append(liste)
+    for i in range(1,len(dictionary)-1):
+        for element in dictionary[i].items():
+            for word in dico_general:
+                if element[0] in word[i]:
+                    print (element[0], word[0])
+
+    print(dico_general)
     #PARCOURS LE DICO ET REGARDE CBM DE DOCS MOT APPARAIT DEDANS
 
     """IDF calculation w/log"""
-    idf_word = {}
+    """idf_word = {}
     for key, value in dico_general.items(): # transforms the dict of tf (key-val) into an idf with the help from formula
         idf_word[key] = log(len(dictionary) / value)
-    return idf_word   #tf idf c'est tf times idf, le log calcule seulement idf
+    #return idf_word   #tf idf c'est tf times idf, le log calcule seulement idf"""
 
 """
 def tf_idf_prez():
@@ -303,6 +312,7 @@ def menu():
 files_names = list_of_files("txt")
 noms_presidents = extraction_names(files_names)
 noms_presidents2 = association_1st_names(noms_presidents)
-dico_general = {}
+dico_general = []
 dictionary = (clean_docs_and_tf(files_names))
-print (dictionary)
+print(dico_general)
+idf(dictionary, dico_general)
