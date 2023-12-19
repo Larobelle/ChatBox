@@ -135,7 +135,7 @@ def clean_docs_and_tf(files_names):
         dico = collections.Counter(speech)#.most_common(285) #keep the 50 most common words from the speech
         del dico['']
         #dico = collections.OrderedDict(dico)
-        dictionary.append(dico) #il faut pouvoir avoir accès à chaque speech séparement aussi, car pour idf, il faut voir dans combien de speech un mot apparait
+        dictionary.append(dico)
 
     return dictionary
 
@@ -281,6 +281,7 @@ def menu():
     print ("Type 2 if you want the list of the presidents' names.")
     print("Type 3 to display the most common words in the corpus of texts")
     print("Type 4 to display the least common words in the corpus of texts")
+    print("Type 5 to ask a question")
     print("Type 0 to exit the code.")
     m = idf(dictionary, dico_general)
 
