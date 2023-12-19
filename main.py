@@ -142,7 +142,7 @@ def clean_docs_and_tf(files_names):
 
 def idf(dictionary, dico_general):
     """
-    Takes in as a parameter the term frequency of all documents
+    Takes in as a parameter the term frequency of all documents - not finished
     :param dictionary: list
     :param dico_general: list
     :return: idf_word: dict
@@ -163,7 +163,6 @@ def idf(dictionary, dico_general):
                     print (element[0], word[0])
 
     print(dico_general)
-    #PARCOURS LE DICO ET REGARDE CBM DE DOCS MOT APPARAIT DEDANS
 
     """IDF calculation w/log"""
     """idf_word = {}
@@ -200,7 +199,11 @@ def tf_idf_prez():
 """
 
 
-def tokanization ():                                                #to return the question cleaned
+def tokanization ():
+    """
+    Processes the question (asked in french) and returns it cleaned
+    :return question: string
+    """
     question = input("Ask a question in french ! :")
     question = question.lower()  # puts the question in lower case
     for i in range(len(question)):
@@ -249,7 +252,12 @@ def tokanization ():                                                #to return t
 
     return question
 
-def list_of_question_words(quest):    #to return the list of words in the question
+def list_of_question_words(quest):
+    """
+    to return the list of words in the question
+    :param quest: string
+    :return words_of_question: list
+    """
     words_of_question = []
     words_of_question = quest.split(" ")
     words_of_question.remove("")
@@ -257,7 +265,13 @@ def list_of_question_words(quest):    #to return the list of words in the questi
     return words_of_question
 
 
-def intersection_question_files(a, dict):     #to return all the words that appear in the question AND in the files
+def intersection_question_files(a, dict):
+    """
+    to return all the words that appear in the question AND in the files
+    :param a: list
+    :param dict: dictionary
+    :return: None
+    """
     tmp_list = []
     for i in range (len(a)) :
         if a[i] in dict :
@@ -281,6 +295,7 @@ def menu():
     print ("Type 2 if you want the list of the presidents' names.")
     print("Type 3 to display the most common words in the corpus of texts")
     print("Type 4 to display the least common words in the corpus of texts")
+    print("Type 5 to display the intersection between the words of the question and the words in the corpus")
     print("Type 0 to exit the code.")
     m = idf(dictionary, dico_general)
 
@@ -308,11 +323,12 @@ def menu():
             exit()
 
 
-#menu()
-files_names = list_of_files("txt")
+
+"""files_names = list_of_files("txt")
 noms_presidents = extraction_names(files_names)
 noms_presidents2 = association_1st_names(noms_presidents)
 dico_general = []
 dictionary = (clean_docs_and_tf(files_names))
 print(dico_general)
-idf(dictionary, dico_general)
+idf(dictionary, dico_general)"""
+menu()
