@@ -330,5 +330,6 @@ noms_presidents2 = association_1st_names(noms_presidents)
 dico_general = []
 dictionary = (clean_docs_and_tf(files_names))
 print(dico_general)
+
 idf(dictionary, dico_general)"""
 menu()
